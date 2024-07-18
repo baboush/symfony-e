@@ -5,10 +5,10 @@ lexik_jwt_authentication:
   token_ttl: 3600
   allow_no_expiration: false
 
-token_extractors:
-  cookie:
-    enable: true
-    name: BEARER
+  token_extractors:
+    cookie:
+      enabled: true
+      name: BEARER
 
-set_cookies:
-  BEARER: ~
+  set_cookies:
+    BEARER: ~
