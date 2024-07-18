@@ -2,18 +2,47 @@
 
 namespace App\Controller;
 
+use App\Entity\Brand;
+use App\Form\BrandType;
+use App\Form\Traits\ApiControllerTrait;
+use App\Repository\BrandRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 class BrandController extends AbstractController
 {
-    #[Route('/brand', name: 'app_brand')]
+    use ApiControllerTrait;
+
+    public function __construct(
+        private EntityManagerInterface $em,
+        private BrandRepository $repo,
+    ) {
+
+    }
+
+    #[Route('/api/brand', name: 'app_brand')]
     public function index(): JsonResponse
     {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/BrandController.php',
-        ]);
+        return $this->json($this->repo->findAll());
+    }
+
+    #[Route('/api/brand/create', name: 'app_brand_create', methods: ['POST'])]
+    public function create(Request $request): JsonResponse
+    {
+        $brand = new Brand();
+        $form = $this->createForm(BrandType::class, $brand, ['csrf_protection' => false]);
+        $data = json_decode($request->getContent(), true);
+        $form->submit($data, false);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->em->persist($brand);
+            $this->em->flush();
+            return $this->json($brand, 201);
+        }
+
+        return $this->getFormErrors($form);
     }
 }
