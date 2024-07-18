@@ -72,4 +72,10 @@ class BrandController extends AbstractController
         $this->em->flush();
         return $this->json(["message" => "Brand deleted"], 200);
     }
+
+    #[Route('/api/brand/{id}', name: 'app_brand_show', methods: ['GET'])]
+    public function show(?Brand $brand, int $id): JsonResponse
+    {
+        return $this->json($brand);
+    }
 }
