@@ -69,4 +69,15 @@ class UserController extends AbstractController
         }
         return $this->getFormErrors($form);
     }
+
+    #[Route('/user/delete/{id}', name: 'app_user_delete', methods: ['DELETE'])]
+    public function delete(?User $user, int $id): JsonResponse
+    {
+        if(!$user) {
+            return $this->json(["message" => "User not found"], 404);
+        }
+        $this->em->remove($user);
+        $this->em->flush();
+        return $this->json(["message" => "User deleted"]);
+    }
 }
