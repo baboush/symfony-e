@@ -3,7 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\ModelRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: ModelRepository::class)]
 class Model
@@ -13,16 +16,24 @@ class Model
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 3, max: 255)]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 3, max: 255)]
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
+    #[Assert\NotBlank]
+    #[Assert\Type(type: "bool")]
     #[ORM\Column]
     private ?bool $enable = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    #[Gedmo\Timestampable(on: 'create')]
+
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
