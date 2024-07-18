@@ -45,4 +45,20 @@ class BrandController extends AbstractController
 
         return $this->getFormErrors($form);
     }
+
+    #[Route('/api/brand/edit/{id}', name: 'app_brand_edit', methods: ['PUT', 'PATCH'])]
+    public function update(Request $request, ?Brand $brand): JsonResponse
+    {
+        if (!$brand) {
+            return $this->json(["message" => "Brand not found"], 404);
+        }
+        $form = $this->createForm(BrandType::class, $brand, ['csrf_protection' => false]);
+        $data = json_decode($request->getContent(), true);
+        $form->submit($data, false);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->em->flush();
+            return $this->json($brand, 200);
+        }
+        return $this->getFormErrors($form);
+    }
 }
