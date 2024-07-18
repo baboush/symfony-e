@@ -80,4 +80,10 @@ class UserController extends AbstractController
         $this->em->flush();
         return $this->json(["message" => "User deleted"]);
     }
+
+    #[Route('/user/{id}', name: 'app_user_show', methods: ['GET'])]
+    public function show(?User $user, int $id): JsonResponse
+    {
+        return $this->json($user);
+    }
 }
