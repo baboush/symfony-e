@@ -61,4 +61,15 @@ class BrandController extends AbstractController
         }
         return $this->getFormErrors($form);
     }
+
+    #[Route('/api/brand/delete/{id}', name: 'app_brand_delete', methods: ['DELETE'])]
+    public function delete(?Brand $brand): JsonResponse
+    {
+        if (!$brand) {
+            return $this->json(["message" => "Brand not found"], 404);
+        }
+        $this->em->remove($brand);
+        $this->em->flush();
+        return $this->json(["message" => "Brand deleted"], 200);
+    }
 }
