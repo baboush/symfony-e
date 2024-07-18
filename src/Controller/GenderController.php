@@ -46,7 +46,7 @@ class GenderController extends AbstractController
     }
 
     #[Route('/api/gender/edit/{id}', name: 'app_gender_edit', methods: ['PUT', 'PATCH'])]
-    public function update(Request $request, ?Gender $gender, int $id): JsonResponse
+    public function update(Request $request, ?Gender $gender): JsonResponse
     {
         if(!$gender) {
             return $this->json(["message" => "Gender not found"], 404);
