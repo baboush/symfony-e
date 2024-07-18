@@ -69,6 +69,14 @@ class GenderController extends AbstractController
         }
         $this->em->remove($gender);
         $this->em->flush();
-        return $this->json(["message" => "genderid deleted successfully"]);
+        return $this->json(["message" => "gender id deleted successfully"]);
+    }
+
+    #[Route('/api/gender/{id}', name:"app_gender_show", methods: ['GET'])]
+    public function show(?Gender $gender, int $id): JsonResponse
+    {
+        if(!$gender) {
+            return $this->json($gender);
+        }
     }
 }
