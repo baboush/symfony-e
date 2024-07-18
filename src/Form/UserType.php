@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -12,9 +13,9 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email')
+            ->add('email', EmailType::class)
             ->add('roles')
-            ->add('password')
+            ->add('password', null, ["mapped" => false])
             ->add('firstName')
             ->add('lastName')
             ->add('phone')
@@ -27,7 +28,6 @@ class UserType extends AbstractType
             ->add('updatedAt', null, [
                 'widget' => 'single_text',
             ])
-            ->add('slug')
         ;
     }
 
