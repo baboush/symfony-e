@@ -75,8 +75,6 @@ class GenderController extends AbstractController
     #[Route('/api/gender/{id}', name:"app_gender_show", methods: ['GET'])]
     public function show(?Gender $gender, int $id): JsonResponse
     {
-        if(!$gender) {
-            return $this->json($gender);
-        }
+        return $this->json($gender);
     }
 }
